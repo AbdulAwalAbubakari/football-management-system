@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ullo Town Tea Football Team Management System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    .login-card h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
+
+    .login-card p {
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .login-card input,
+    .login-card select,
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .login-card input:focus,
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #64748b;
+      color: white;
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .error-text {
+      color: #dc2626;
+      margin-top: 12px;
+      min-height: 20px;
+      font-size: 14px;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #0f172a;
+      color: white;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
+
+    .brand {
+      margin-bottom: 28px;
+    }
+
+    .brand h2 {
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .brand p {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .menu button {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      color: #e5e7eb;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s ease;
+    }
+
+    .menu button:hover,
+    .menu button.active {
+      background: #1e293b;
+      color: white;
+    }
+
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 24px;
+    }
+
+    .topbar {
+      background: white;
+      padding: 18px 22px;
+      border-radius: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+      margin-bottom: 24px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      font-size: 24px;
+    }
+
+    .topbar p {
+      color: #64748b;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .stat-card .value {
+      font-size: 30px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: #475569;
+      background: #f8fafc;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-fit {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-injured {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge-home {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge-away {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .list-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .list-item {
+      padding: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .muted {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-header h3 {
+      font-size: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 920px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .app {
+        flex-direction: column;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loginPage" class="login-page">
+    <div class="login-card">
+      <h1>Ullo Football Club </h1>
+      <p>Professional football team management dashboard</p>
+      <input type="text" id="loginUsername" placeholder="Username">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button class="btn btn-primary login-btn" id="loginBtn">Login</button>
+      <div id="loginError" class="error-text"></div>
+    </div>
+  </div>
+
+  <div id="appContainer" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>Club Manager</h2>
+        <p>Football Team Management System</p>
+      </div>
+
+      <div class="menu">
+        <button class="menu-btn active" data-section="dashboard">Dashboard</button>
+        <button class="menu-btn" data-section="players">Players</button>
+        <button class="menu-btn" data-section="staff">Staff</button>
+        <button class="menu-btn" data-section="matches">Matches</button>
+        <button class="menu-btn" data-section="training">Training</button>
+        <button class="menu-btn" data-section="medical">Medical</button>
+        <button class="menu-btn" data-section="finances">Finances</button>
+        <button class="menu-btn" data-section="reports">Reports</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Football Team Management</h1>
+          <p>Manage players, staff, matches, training, medical records and finances</p>
+        </div>
+        <button class="btn btn-danger" id="logoutBtn">Logout</button>
+      </div>
+
+      <section id="dashboard" class="section active">
+        <div class="stats-grid">
+          <div class="card stat-card">
+            <h3>Total Players</h3>
+            <div class="value" id="statPlayers">0</div>
+          </div>
+          <div class="card stat-card">
+            <h3>Total Staff</h3>
+            <div class="value" id="statStaff">0</div>
+          </div>
+          <div class="card stat-card">
+            <h3>Total Matches</h3>
+            <div class="value" id="statMatches">0</div>
+          </div>
+          <div class="card stat-card">
+            <h3>Training Sessions</h3>
+            <div class="value" id="statTraining">0</div>
+          </div>
+          <div class="card stat-card">
+            <h3>Injured Players</h3>
+            <div class="value" id="statInjured">0</div>
+          </div>
+          <div class="card stat-card">
+            <h3>Total Balance</h3>
+            <div class="value" id="statBalance">$0</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Recent Announcements</h3>
+            <div class="list-box" id="announcementList"></div>
+          </div>
+          <div class="card">
+            <h3>Upcoming Matches</h3>
+            <div class="list-box" id="upcomingMatchList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="players" class="section">
+        <div class="section-header">
+          <h2>Players Management</h2>
+          <div class="toolbar">
+            <input type="text" id="playerSearch" placeholder="Search player...">
+            <button class="btn btn-success" onclick="openPlayerModal()">Add Player</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player Name</th>
+                <th>Age</th>
+                <th>Position</th>
+                <th>Jersey No</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="playersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="staff" class="section">
+        <div class="section-header">
+          <h2>Coach / Staff Management</h2>
+          <div class="toolbar">
+            <button class="btn btn-success" onclick="openStaffModal()">Add Staff</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="staffTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="matches" class="section">
+        <div class="section-header">
+          <h2>Match Management</h2>
+          <div class="toolbar">
+            <button class="btn btn-success" onclick="openMatchModal()">Add Match</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Opponent</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>Competition</th>
+                <th>Result</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="matchesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="training" class="section">
+        <div class="section-header">
+          <h2>Training Sessions</h2>
+          <div class="toolbar">
+            <button class="btn btn-success" onclick="openTrainingModal()">Add Session</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Focus</th>
+                <th>Coach</th>
+                <th>Location</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="trainingTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="medical" class="section">
+        <div class="section-header">
+          <h2>Medical / Injury Records</h2>
+          <div class="toolbar">
+            <button class="btn btn-success" onclick="openMedicalModal()">Add Record</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Injury</th>
+                <th>Date Reported</th>
+                <th>Recovery Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="medicalTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="finances" class="section">
+        <div class="section-header">
+          <h2>Team Finances</h2>
+          <div class="toolbar">
+            <button class="btn btn-success" onclick="openFinanceModal()">Add Transaction</button>
+          </div>
+        </div>
+
+        <div class="card table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Note</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="financeTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="reports" class="section">
+        <div class="section-header">
+          <h2>Reports Dashboard</h2>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Squad Summary</h3>
+            <p class="muted" id="reportSquad"></p>
+          </div>
+          <div class="card">
+            <h3>Match Summary</h3>
+            <p class="muted" id="reportMatches"></p>
+          </div>
+          <div class="card">
+            <h3>Medical Summary</h3>
+            <p class="muted" id="reportMedical"></p>
+          </div>
+          <div class="card">
+            <h3>Finance Summary</h3>
+            <p class="muted" id="reportFinance"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="playerModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="playerModalTitle">Add Player</h3>
+        <button class="btn btn-secondary" onclick="closeModal('playerModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Player Name</label>
+          <input type="text" id="playerName">
+        </div>
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" id="playerAge">
+        </div>
+        <div class="form-group">
+          <label>Position</label>
+          <select id="playerPosition">
+            <option value="">Select Position</option>
+            <option>Goalkeeper</option>
+            <option>Defender</option>
+            <option>Midfielder</option>
+            <option>Forward</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Jersey Number</label>
+          <input type="number" id="playerJersey">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="playerStatus">
+            <option value="">Select Status</option>
+            <option>Fit</option>
+            <option>Injured</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('playerModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="savePlayer()">Save Player</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="staffModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="staffModalTitle">Add Staff</h3>
+        <button class="btn btn-secondary" onclick="closeModal('staffModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="staffName">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <input type="text" id="staffRole">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="staffPhone">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="staffEmail">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('staffModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveStaff()">Save Staff</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="matchModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="matchModalTitle">Add Match</h3>
+        <button class="btn btn-secondary" onclick="closeModal('matchModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Opponent</label>
+          <input type="text" id="matchOpponent">
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="matchDate">
+        </div>
+        <div class="form-group">
+          <label>Venue</label>
+          <select id="matchVenue">
+            <option value="">Select Venue</option>
+            <option>Home</option>
+            <option>Away</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Competition</label>
+          <input type="text" id="matchCompetition">
+        </div>
+        <div class="form-group">
+          <label>Result</label>
+          <input type="text" id="matchResult" placeholder="e.g. 2-1">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('matchModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveMatch()">Save Match</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="trainingModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="trainingModalTitle">Add Training Session</h3>
+        <button class="btn btn-secondary" onclick="closeModal('trainingModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="trainingDate">
+        </div>
+        <div class="form-group">
+          <label>Focus</label>
+          <input type="text" id="trainingFocus">
+        </div>
+        <div class="form-group">
+          <label>Coach</label>
+          <input type="text" id="trainingCoach">
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="trainingLocation">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('trainingModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveTraining()">Save Session</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="medicalModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="medicalModalTitle">Add Medical Record</h3>
+        <button class="btn btn-secondary" onclick="closeModal('medicalModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Player Name</label>
+          <input type="text" id="medicalPlayer">
+        </div>
+        <div class="form-group">
+          <label>Injury</label>
+          <input type="text" id="medicalInjury">
+        </div>
+        <div class="form-group">
+          <label>Date Reported</label>
+          <input type="date" id="medicalReported">
+        </div>
+        <div class="form-group">
+          <label>Recovery Date</label>
+          <input type="date" id="medicalRecovery">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="medicalStatus">
+            <option value="">Select Status</option>
+            <option>Under Treatment</option>
+            <option>Recovered</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('medicalModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveMedical()">Save Record</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="financeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="financeModalTitle">Add Transaction</h3>
+        <button class="btn btn-secondary" onclick="closeModal('financeModal')">X</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="financeType">
+            <option value="">Select Type</option>
+            <option>Income</option>
+            <option>Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" id="financeCategory">
+        </div>
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" id="financeAmount">
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="financeDate">
+        </div>
+        <div class="form-group">
+          <label>Note</label>
+          <input type="text" id="financeNote">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('financeModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveFinance()">Save Transaction</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginDetails = { username: "admin", password: "1234" };
+
+    let players = [
+      { name: "Abdul Karim", age: 24, position: "Forward", jersey: 9, status: "Fit" },
+      { name: "Mubarak Issah", age: 22, position: "Midfielder", jersey: 8, status: "Injured" }
+    ];
+
+    let staff = [
+      { name: "Coach Mensah", role: "Head Coach", phone: "0240000001", email: "coach@club.com" },
+      { name: "Dr. Adams", role: "Physiotherapist", phone: "0240000002", email: "doctor@club.com" }
+    ];
+
+    let matches = [
+      { opponent: "Dream FC", date: "2026-03-28", venue: "Home", competition: "League", result: "Pending" },
+      { opponent: "Hearts", date: "2026-04-04", venue: "Away", competition: "Cup", result: "Pending" }
+    ];
+
+    let trainingSessions = [
+      { date: "2026-03-24", focus: "Ball Possession", coach: "Coach Mensah", location: "Main Pitch" }
+    ];
+
+    let medicalRecords = [
+      { player: "Mubarak Issah", injury: "Hamstring Strain", reported: "2026-03-18", recovery: "2026-04-08", status: "Under Treatment" }
+    ];
+
+    let finances = [
+      { type: "Income", category: "Sponsorship", amount: 5000, date: "2026-03-10", note: "Monthly sponsor support" },
+      { type: "Expense", category: "Medical Bills", amount: 1200, date: "2026-03-15", note: "Player treatment" }
+    ];
+
+    let announcements = [
+      { title: "Training moved to 7:00 AM", detail: "Morning session starts earlier on Tuesday." },
+      { title: "Matchday squad to be announced Friday", detail: "Final list will be posted after fitness checks." }
+    ];
+
+    let editingPlayerIndex = null;
+    let editingStaffIndex = null;
+    let editingMatchIndex = null;
+    let editingTrainingIndex = null;
+    let editingMedicalIndex = null;
+    let editingFinanceIndex = null;
+
+    document.getElementById("loginBtn").addEventListener("click", login);
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    document.getElementById("playerSearch").addEventListener("input", renderPlayers);
+
+    document.querySelectorAll(".menu-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".menu-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const sectionId = btn.dataset.section;
+        document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+        document.getElementById(sectionId).classList.add("active");
+      });
+    });
+
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const error = document.getElementById("loginError");
+
+      if (username === loginDetails.username && password === loginDetails.password) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("appContainer").classList.remove("hidden");
+        error.textContent = "";
+        refreshAll();
+      } else {
+        error.textContent = "Invalid username or password.";
+      }
+    }
+
+    function logout() {
+      document.getElementById("appContainer").classList.add("hidden");
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("loginUsername").value = "";
+      document.getElementById("loginPassword").value = "";
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("show");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("show");
+    }
+
+    function refreshAll() {
+      renderPlayers();
+      renderStaff();
+      renderMatches();
+      renderTraining();
+      renderMedical();
+      renderFinances();
+      renderAnnouncements();
+      renderUpcomingMatches();
+      updateStats();
+      updateReports();
+    }
+
+    function updateStats() {
+      document.getElementById("statPlayers").textContent = players.length;
+      document.getElementById("statStaff").textContent = staff.length;
+      document.getElementById("statMatches").textContent = matches.length;
+      document.getElementById("statTraining").textContent = trainingSessions.length;
+      document.getElementById("statInjured").textContent = players.filter(p => p.status === "Injured").length;
+
+      const balance = finances.reduce((sum, item) => {
+        return item.type === "Income" ? sum + Number(item.amount) : sum - Number(item.amount);
+      }, 0);
+
+      document.getElementById("statBalance").textContent = "$" + balance.toLocaleString();
+    }
+
+    function renderAnnouncements() {
+      const list = document.getElementById("announcementList");
+      list.innerHTML = "";
+      announcements.forEach(item => {
+        list.innerHTML += `
+          <div class="list-item">
+            <strong>${item.title}</strong>
+            <div class="muted">${item.detail}</div>
+          </div>
+        `;
+      });
+    }
+
+    function renderUpcomingMatches() {
+      const list = document.getElementById("upcomingMatchList");
+      list.innerHTML = "";
+      matches.forEach(item => {
+        list.innerHTML += `
+          <div class="list-item">
+            <strong>vs ${item.opponent}</strong>
+            <div class="muted">${item.date} | ${item.venue} | ${item.competition}</div>
+          </div>
+        `;
+      });
+    }
+
+    function updateReports() {
+      const injured = players.filter(p => p.status === "Injured").length;
+      const income = finances.filter(f => f.type === "Income").reduce((a, b) => a + Number(b.amount), 0);
+      const expense = finances.filter(f => f.type === "Expense").reduce((a, b) => a + Number(b.amount), 0);
+
+      document.getElementById("reportSquad").textContent =
+        `The club currently has ${players.length} registered players and ${staff.length} staff members.`;
+
+      document.getElementById("reportMatches").textContent =
+        `${matches.length} matches have been scheduled or recorded in the system.`;
+
+      document.getElementById("reportMedical").textContent =
+        `${medicalRecords.length} medical records exist, with ${injured} players currently marked as injured.`;
+
+      document.getElementById("reportFinance").textContent =
+        `Total income is $${income.toLocaleString()} while total expenses are $${expense.toLocaleString()}.`;
+    }
+
+    function openPlayerModal(index = null) {
+      editingPlayerIndex = index;
+      document.getElementById("playerModalTitle").textContent = index === null ? "Add Player" : "Edit Player";
+
+      if (index !== null) {
+        const p = players[index];
+        document.getElementById("playerName").value = p.name;
+        document.getElementById("playerAge").value = p.age;
+        document.getElementById("playerPosition").value = p.position;
+        document.getElementById("playerJersey").value = p.jersey;
+        document.getElementById("playerStatus").value = p.status;
+      } else {
+        document.getElementById("playerName").value = "";
+        document.getElementById("playerAge").value = "";
+        document.getElementById("playerPosition").value = "";
+        document.getElementById("playerJersey").value = "";
+        document.getElementById("playerStatus").value = "";
+      }
+
+      openModal("playerModal");
+    }
+
+    function savePlayer() {
+      const name = document.getElementById("playerName").value.trim();
+      const age = document.getElementById("playerAge").value.trim();
+      const position = document.getElementById("playerPosition").value;
+      const jersey = document.getElementById("playerJersey").value.trim();
+      const status = document.getElementById("playerStatus").value;
+
+      if (!name || !age || !position || !jersey || !status) {
+        alert("Please complete all player fields.");
+        return;
+      }
+
+      const playerData = { name, age: Number(age), position, jersey: Number(jersey), status };
+
+      if (editingPlayerIndex === null) {
+        players.push(playerData);
+      } else {
+        players[editingPlayerIndex] = playerData;
+      }
+
+      closeModal("playerModal");
+      renderPlayers();
+      updateStats();
+      updateReports();
+    }
+
+    function renderPlayers() {
+      const tbody = document.getElementById("playersTableBody");
+      const search = document.getElementById("playerSearch").value.toLowerCase();
+      tbody.innerHTML = "";
+
+      const filtered = players.filter(player =>
+        player.name.toLowerCase().includes(search) ||
+        player.position.toLowerCase().includes(search)
+      );
+
+      filtered.forEach((player, index) => {
+        const actualIndex = players.indexOf(player);
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${player.name}</td>
+            <td>${player.age}</td>
+            <td>${player.position}</td>
+            <td>${player.jersey}</td>
+            <td><span class="badge ${player.status === "Fit" ? "badge-fit" : "badge-injured"}">${player.status}</span></td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openPlayerModal(${actualIndex})">Edit</button>
+                <button class="btn btn-danger" onclick="deletePlayer(${actualIndex})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deletePlayer(index) {
+      if (confirm("Delete this player?")) {
+        players.splice(index, 1);
+        refreshAll();
+      }
+    }
+
+    function openStaffModal(index = null) {
+      editingStaffIndex = index;
+
+      if (index !== null) {
+        const s = staff[index];
+        document.getElementById("staffName").value = s.name;
+        document.getElementById("staffRole").value = s.role;
+        document.getElementById("staffPhone").value = s.phone;
+        document.getElementById("staffEmail").value = s.email;
+      } else {
+        document.getElementById("staffName").value = "";
+        document.getElementById("staffRole").value = "";
+        document.getElementById("staffPhone").value = "";
+        document.getElementById("staffEmail").value = "";
+      }
+
+      openModal("staffModal");
+    }
+
+    function saveStaff() {
+      const name = document.getElementById("staffName").value.trim();
+      const role = document.getElementById("staffRole").value.trim();
+      const phone = document.getElementById("staffPhone").value.trim();
+      const email = document.getElementById("staffEmail").value.trim();
+
+      if (!name || !role || !phone || !email) {
+        alert("Please complete all staff fields.");
+        return;
+      }
+
+      const data = { name, role, phone, email };
+
+      if (editingStaffIndex === null) staff.push(data);
+      else staff[editingStaffIndex] = data;
+
+      closeModal("staffModal");
+      refreshAll();
+    }
+
+    function renderStaff() {
+      const tbody = document.getElementById("staffTableBody");
+      tbody.innerHTML = "";
+      staff.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.role}</td>
+            <td>${item.phone}</td>
+            <td>${item.email}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openStaffModal(${index})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteStaff(${index})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteStaff(index) {
+      if (confirm("Delete this staff record?")) {
+        staff.splice(index, 1);
+        refreshAll();
+      }
+    }
+
+    function openMatchModal(index = null) {
+      editingMatchIndex = index;
+
+      if (index !== null) {
+        const m = matches[index];
+        document.getElementById("matchOpponent").value = m.opponent;
+        document.getElementById("matchDate").value = m.date;
+        document.getElementById("matchVenue").value = m.venue;
+        document.getElementById("matchCompetition").value = m.competition;
+        document.getElementById("matchResult").value = m.result;
+      } else {
+        document.getElementById("matchOpponent").value = "";
+        document.getElementById("matchDate").value = "";
+        document.getElementById("matchVenue").value = "";
+        document.getElementById("matchCompetition").value = "";
+        document.getElementById("matchResult").value = "";
+      }
+
+      openModal("matchModal");
+    }
+
+    function saveMatch() {
+      const opponent = document.getElementById("matchOpponent").value.trim();
+      const date = document.getElementById("matchDate").value;
+      const venue = document.getElementById("matchVenue").value;
+      const competition = document.getElementById("matchCompetition").value.trim();
+      const result = document.getElementById("matchResult").value.trim() || "Pending";
+
+      if (!opponent || !date || !venue || !competition) {
+        alert("Please complete all match fields.");
+        return;
+      }
+
+      const data = { opponent, date, venue, competition, result };
+
+      if (editingMatchIndex === null) matches.push(data);
+      else matches[editingMatchIndex] = data;
+
+      closeModal("matchModal");
+      refreshAll();
+    }
+
+    function renderMatches() {
+      const tbody = document.getElementById("matchesTableBody");
+      tbody.innerHTML = "";
+      matches.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.opponent}</td>
+            <td>${item.date}</td>
+            <td><span class="badge ${item.venue === "Home" ? "badge-home" : "badge-away"}">${item.venue}</span></td>
+            <td>${item.competition}</td>
+            <td>${item.result}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openMatchModal(${index})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteMatch(${index})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteMatch(index) {
+      if (confirm("Delete this match?")) {
+        matches.splice(index, 1);
+        refreshAll();
+      }
+    }
+
+    function openTrainingModal(index = null) {
+      editingTrainingIndex = index;
+
+      if (index !== null) {
+        const t = trainingSessions[index];
+        document.getElementById("trainingDate").value = t.date;
+        document.getElementById("trainingFocus").value = t.focus;
+        document.getElementById("trainingCoach").value = t.coach;
+        document.getElementById("trainingLocation").value = t.location;
+      } else {
+        document.getElementById("trainingDate").value = "";
+        document.getElementById("trainingFocus").value = "";
+        document.getElementById("trainingCoach").value = "";
+        document.getElementById("trainingLocation").value = "";
+      }
+
+      openModal("trainingModal");
+    }
+
+    function saveTraining() {
+      const date = document.getElementById("trainingDate").value;
+      const focus = document.getElementById("trainingFocus").value.trim();
+      const coach = document.getElementById("trainingCoach").value.trim();
+      const location = document.getElementById("trainingLocation").value.trim();
+
+      if (!date || !focus || !coach || !location) {
+        alert("Please complete all training fields.");
+        return;
+      }
+
+      const data = { date, focus, coach, location };
+
+      if (editingTrainingIndex === null) trainingSessions.push(data);
+      else trainingSessions[editingTrainingIndex] = data;
+
+      closeModal("trainingModal");
+      refreshAll();
+    }
+
+    function renderTraining() {
+      const tbody = document.getElementById("trainingTableBody");
+      tbody.innerHTML = "";
+      trainingSessions.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.date}</td>
+            <td>${item.focus}</td>
+            <td>${item.coach}</td>
+            <td>${item.location}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openTrainingModal(${index})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteTraining(${index})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteTraining(index) {
+      if (confirm("Delete this training session?")) {
+        trainingSessions.splice(index, 1);
+        refreshAll();
+      }
+    }
+
+    function openMedicalModal(index = null) {
+      editingMedicalIndex = index;
+
+      if (index !== null) {
+        const m = medicalRecords[index];
+        document.getElementById("medicalPlayer").value = m.player;
+        document.getElementById("medicalInjury").value = m.injury;
+        document.getElementById("medicalReported").value = m.reported;
+        document.getElementById("medicalRecovery").value = m.recovery;
+        document.getElementById("medicalStatus").value = m.status;
+      } else {
+        document.getElementById("medicalPlayer").value = "";
+        document.getElementById("medicalInjury").value = "";
+        document.getElementById("medicalReported").value = "";
+        document.getElementById("medicalRecovery").value = "";
+        document.getElementById("medicalStatus").value = "";
+      }
+
+      openModal("medicalModal");
+    }
+
+    function saveMedical() {
+      const player = document.getElementById("medicalPlayer").value.trim();
+      const injury = document.getElementById("medicalInjury").value.trim();
+      const reported = document.getElementById("medicalReported").value;
+      const recovery = document.getElementById("medicalRecovery").value;
+      const status = document.getElementById("medicalStatus").value;
+
+      if (!player || !injury || !reported || !recovery || !status) {
+        alert("Please complete all medical fields.");
+        return;
+      }
+
+      const data = { player, injury, reported, recovery, status };
+
+      if (editingMedicalIndex === null) medicalRecords.push(data);
+      else medicalRecords[editingMedicalIndex] = data;
+
+      closeModal("medicalModal");
+      refreshAll();
+    }
+
+    function renderMedical() {
+      const tbody = document.getElementById("medicalTableBody");
+      tbody.innerHTML = "";
+      medicalRecords.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.player}</td>
+            <td>${item.injury}</td>
+            <td>${item.reported}</td>
+            <td>${item.recovery}</td>
+            <td>${item.status}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openMedicalModal(${index})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteMedical(${index})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteMedical(index) {
+      if (confirm("Delete this medical record?")) {
+        medicalRecords.splice(index, 1);
+        refreshAll();
+      }
+    }
+
+    function openFinanceModal(index = null) {
+      editingFinanceIndex = index;
+
+      if (index !== null) {
+        const f = finances[index];
+        document.getElementById("financeType").value = f.type;
+        document.getElementById("financeCategory").value = f.category;
+        document.getElementById("financeAmount").value = f.amount;
+        document.getElementById("financeDate").value = f.date;
+        document.getElementById("financeNote").value = f.note;
+      } else {
+        document.getElementById("financeType").value = "";
+        document.getElementById("financeCategory").value = "";
+        document.getElementById("financeAmount").value = "";
+        document.getElementById("financeDate").value = "";
+        document.getElementById("financeNote").value = "";
+      }
+
+      openModal("financeModal");
+    }
+
+    function saveFinance() {
+      const type = document.getElementById("financeType").value;
+      const category = document.getElementById("financeCategory").value.trim();
+      const amount = document.getElementById("financeAmount").value.trim();
+      const date = document.getElementById("financeDate").value;
+      const note = document.getElementById("financeNote").value.trim();
+
+      if (!type || !category || !amount || !date || !note) {
+        alert("Please complete all finance fields.");
+        return;
+      }
+
+      const data = { type, category, amount: Number(amount), date, note };
+
+      if (editingFinanceIndex === null) finances.push(data);
+      else finances[editingFinanceIndex] = data;
+
+      closeModal("financeModal");
+      refreshAll();
+    }
+
+    function renderFinances() {
+      const tbody = document.getElementById("financeTableBody");
+      tbody.innerHTML = "";
+      finances.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.type}</td>
+            <td>${item.category}</td>
+            <td>$${Number(item.amount).toLocaleString()}</td>
+            <td>${item.date}</td>
+            <td>${item.note}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-warning" onclick="openFinanceModal(${index})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteFinance(${index})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteFinance(index) {
+      if (confirm("Delete this finance transaction?")) {
+        finances.splice(index, 1);
+        refreshAll();
+      }
+    }
+  </script>
+</body>
+</html>
